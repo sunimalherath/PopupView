@@ -9,8 +9,25 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var showingPopup = false
     var body: some View {
-        Text("Hello, World!")
+        Button(action: {
+            self.showingPopup.toggle()
+        }) {
+            Text("Show Popup")
+        }.sheet(isPresented: $showingPopup) {
+            PopupRectView()
+        }
+    }
+}
+
+struct PopupRectView: View {
+    var body: some View {
+        Rectangle()
+            .fill(Color.yellow)
+            .frame(width: 200.0, height: 400.0)
+            .shadow(color: .black, radius: 10, x: 1, y: 5)
+            
     }
 }
 
