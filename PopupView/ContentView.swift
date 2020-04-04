@@ -9,27 +9,56 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var showingPopup = false
+    @State var showPopup = false
     var body: some View {
-        Button(action: {
-            self.showingPopup.toggle()
-        }) {
-            Text("Show Popup")
-        }.sheet(isPresented: $showingPopup) {
-            PopupRectView()
+        ZStack {
+            Button(action: {
+                withAnimation {
+                    self.showPopup.toggle()
+                }
+            }, label: {
+                Text("Show")
+            })
+            
+            if self.showPopup {
+                GeometryReader {_ in
+                    Popup()
+                }.background(
+                    Color.black.opacity(0.60)
+                        .edgesIgnoringSafeArea(.all)
+                        .onTapGesture {
+                            withAnimation {
+                                self.showPopup.toggle()
+                            }
+                    }
+                )
+            }
         }
     }
 }
 
-struct PopupRectView: View {
+struct Popup: View {
     var body: some View {
-        Rectangle()
-            .fill(Color.yellow)
-            .frame(width: 200.0, height: 400.0)
-            .shadow(color: .black, radius: 10, x: 1, y: 5)
-            
+        VStack(alignment: .center, spacing: 15) {
+            Button(action: {
+                // what to do when Start pressed
+            }) {
+                Text("Start")
+            }
+        }
+        .frame(width: 200, height: 400)
+        .padding()
+        .background(Color.white)
+        .cornerRadius(10)
+        .alignmentGuide(HorizontalAlignment.center) { (_ ) -> CGFloat in
+            10
+        }
+        .alignmentGuide(VerticalAlignment.center) { (_) -> CGFloat in
+            10
+        }
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
