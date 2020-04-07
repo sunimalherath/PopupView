@@ -13,51 +13,48 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             Button(action: {
-                withAnimation {
-                    self.showPopup.toggle()
-                }
-            }, label: {
+                self.showPopup.toggle()
+            }) {
                 Text("Show")
-            })
+            }
             
             if self.showPopup {
-                GeometryReader {_ in
-                    Popup()
-                }.background(
-                    Color.black.opacity(0.60)
-                        .edgesIgnoringSafeArea(.all)
-                        .onTapGesture {
-                            withAnimation {
-                                self.showPopup.toggle()
-                            }
-                    }
-                )
+                GeometryReader {geo in
+                    Popup2(width: geo.size.width, height: geo.size.height)
+                }
+                .background(Color.black.opacity(0.6).edgesIgnoringSafeArea(.all))
+                
             }
         }
     }
 }
 
+struct Popup2: View {
+    var width: CGFloat
+    var height: CGFloat
+    
+    var body: some View {
+        RoundedRectangle(cornerRadius: 20)
+            .path(in: CGRect(x: width/8, y: height/8, width: 3*width/4, height: 3*height/4))
+            .fill(Color.white)
+            .shadow(radius: 6)
+            .cornerRadius(10.0)
+    }
+}
+
 struct Popup: View {
     var body: some View {
-        VStack(alignment: .center, spacing: 15) {
-            Button(action: {
-                // what to do when Start pressed
-            }) {
-                Text("Start")
-            }
-        }
-        .frame(width: 200, height: 400)
-        .padding()
-        .background(Color.white)
-        .cornerRadius(10)
-        .alignmentGuide(HorizontalAlignment.center) { (_ ) -> CGFloat in
-            10
-        }
-        .alignmentGuide(VerticalAlignment.center) { (_) -> CGFloat in
-            10
+        ZStack(alignment: .center) {
+            Rectangle()
+                .fill(Color.yellow)
+                .frame(width: 200.0, height: 400.0)
+                
+            Text("This is the popup view")
         }
     }
 }
+
+
 
 
 struct ContentView_Previews: PreviewProvider {
